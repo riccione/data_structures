@@ -41,10 +41,7 @@ void append(node* head, int val) {
     size++;
 }
 
-/*
- * val == -1 <= remove last element
- */
-int pop(node* head, int val) {
+int pop(node* head) {
     int rval = 0;
     node* current = head;
     
@@ -61,17 +58,16 @@ int pop(node* head, int val) {
         return rval;
     }
     
-    if (val == -1) {
-        // get node before tail
-        while (current->next->next != NULL) {
-            current = current->next;
-        }
-
-        rval = current->next->val;
-        free(current->next);
-        current->next = NULL;
-        size--;
+    // get node before tail
+    while (current->next->next != NULL) {
+        current = current->next;
     }
+
+    rval = current->next->val;
+    free(current->next);
+    current->next = NULL;
+    size--;
+ 
     return rval;
 }
 
@@ -109,9 +105,10 @@ int main() {
     printf("size of the list from global var size: %d\n", size);
 
     printf("Linked list contains %d: %d\n", 2, contain(head, 2));
+    printf("Linked list does NOT contain %d: %d\n", 200, contain(head, 200));
 
     // pop last element
-    pop(head, -1);
+    pop(head);
     print_list(head); 
 
     return EXIT_SUCCESS;
