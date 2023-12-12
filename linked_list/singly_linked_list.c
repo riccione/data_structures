@@ -41,36 +41,58 @@ void append(node* head, int val) {
     size++;
 }
 
-int pop(node* head) {
-    int rval = 0;
+// remove an element by index
+int pop(node* head, int index) {
+    int rval = -1;
     node* current = head;
     
     // no elements
     if (size < 1) {
-        return -1;
-    }
-
-    // if there is only one element
-    if (current->next == NULL) {
-        rval = current->val;
-        free(current);
-        size--;
         return rval;
     }
-    
-    // get node before tail
-    while (current->next->next != NULL) {
-        current = current->next;
-    }
 
-    rval = current->next->val;
-    free(current->next);
-    current->next = NULL;
-    size--;
+    if (index == -1) {
+        // if there is only one element
+        if (current->next == NULL) {
+            rval = current->val;
+            free(current);
+            size--;
+            return rval;
+        }
+    
+        // get node before tail
+        while (current->next->next != NULL) {
+            current = current->next;
+        }
+
+        rval = current->next->val;
+        free(current->next);
+        current->next = NULL;
+        size--;
+    } else {
+        node* tmp = NULL;
+
+        for(size_t i = 0; i < index-1; i++) {
+           if (current->next == NULL) {
+               return rval;
+           }
+           current = current->next;
+        }
+        
+        if (current->next == NULL) {
+            return rval;
+        }
+
+        tmp = current->next;
+        rval = tmp->val;
+        current->next = tmp->next;
+        free(tmp);
+    }
  
     return rval;
 }
 
+// check if ll contains an element
 int contain(node* head, int val) {
     int counter = 0;
     while(head != NULL) {
@@ -85,6 +107,7 @@ int contain(node* head, int val) {
 
 int main() {
     node* head = NULL;
+
     head = (node*) malloc(sizeof(node));
     if (head == NULL) {
         return 1;
@@ -98,7 +121,10 @@ int main() {
     size++;
     
     // add an element at the end of the linked list
+    printf("Add a new element to ll: 100\n");
     append(head, 100);
+    printf("Add a new element to ll: 300\n");
+    append(head, 300);
 
     print_list(head);
     printf("size of the list: %d\n", len(head));
@@ -108,7 +134,11 @@ int main() {
     printf("Linked list does NOT contain %d: %d\n", 200, contain(head, 200));
 
     // pop last element
-    pop(head);
+    printf("Remove last element\n");
+    pop(head, -1);
+    print_list(head); 
+    printf("Remove element with index 1\n");
+    pop(head, 1);
     print_list(head); 
 
     return EXIT_SUCCESS;
