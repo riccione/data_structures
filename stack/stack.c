@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <stdbool.h>
 
 int size = 0;
 
@@ -11,7 +10,7 @@ typedef struct node {
 
 node* head = NULL;
 
-bool is_empty();
+int is_empty();
 
 // add node to the head
 void push(int val);
@@ -19,7 +18,7 @@ void push(int val);
 // remove node from the head
 int pop();
 
-void print_ll(node* head);
+void print_ll();
 
 int len();
 
@@ -30,18 +29,21 @@ int main() {
         push(i);
     }
     printf("is empty %s\n", is_empty()?"true":"false");
-    print_ll(head);
-
+    print_ll();
+    
+    printf("peek %d\n", peek());
+    print_ll();
     printf("pop %d\n", pop());
+    print_ll();
     printf("Size: %d\n", len());
     printf("pop %d\n", pop());
 
-    print_ll(head);
+    print_ll();
 
     return 0;
 }
 
-bool is_empty() {
+int is_empty() {
     return size == 0;
 }
 
@@ -49,7 +51,7 @@ int len() {
     return size;
 }
 
-void print_ll(node* head) {
+void print_ll() {
     node* current = head;
     while(current != NULL) {
         printf("%d-->", current->val);
@@ -72,6 +74,9 @@ void push(int val) {
     }
 }
 
+/*
+ * return element from the head and remove it from linked list
+ */ 
 int pop() {
     int val = -1;
     if (head == NULL) {
@@ -87,10 +92,15 @@ int pop() {
     return val;
 }
 
+/*
+ * return element from the head, but not remove it
+ * similar to pop without removing
+ */ 
 int peek() {
     if (head == NULL) {
         printf("Err: peek from an empty stack\n");
         return EXIT_FAILURE;
     }
+
     return head->val;
 }
