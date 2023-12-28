@@ -5,8 +5,8 @@ Inspired by Willam Fiset Java implementation
 https://github.com/williamfiset/Algorithms/
 """
 
-class BinaryHeap():
 
+class BinaryHeap:
     heap = []
 
     def __init__(self, xs):
@@ -33,7 +33,7 @@ class BinaryHeap():
         if is_empty:
             return None
         return self.heap[0]
-   
+
     # remote root
     def poll(self):
         return self.remove_at(0)
@@ -44,13 +44,13 @@ class BinaryHeap():
             if x == el:
                 return True
         return False
-    
+
     def display(self):
         n = self.size()
         i = 0
         level = 0
         while i < n:
-            level_nodes = 2 ** level
+            level_nodes = 2**level
             for j in range(level_nodes):
                 if i < n:
                     print(self.heap[i], end=" ")
@@ -60,27 +60,27 @@ class BinaryHeap():
             print()
             level += 1
         print()
-        #for i, x in enumerate(self.heap): 
+        # for i, x in enumerate(self.heap):
         #    print(f"{x}--", end="")
-        #print()
+        # print()
 
     # top down node sink O(log(n))
     def sink(self, k):
-        #breakpoint()
+        # breakpoint()
         heap_size = self.size()
         while True:
             left = 2 * k + 1
             right = 2 * k + 2
             # just an assumption that left is the smallest
             smallest = left
-                        
+
             if right < heap_size and self.less(right, left):
                 smallest = right
 
             # stop if cannot sink anymore
             if left >= heap_size or self.less(k, smallest):
                 break
-            
+
             self.swap(smallest, k)
             k = smallest
 
@@ -118,7 +118,7 @@ class BinaryHeap():
             if el == x:
                 self.remove_at(i)
                 return True
-        
+
         return False
 
     # removes a node at particular index O(log(n))
@@ -129,7 +129,7 @@ class BinaryHeap():
         index_of_last_el = self.size() - 1
         removed_data = self.heap[i]
         self.swap(i, index_of_last_el)
-        
+
         # removes the last el
         self.heap.pop()
 
@@ -165,16 +165,16 @@ class BinaryHeap():
         return self.is_min_heap(left) and self.is_min_heap(right)
 
 
-binary_heap = BinaryHeap([0,1,2,3,4,5,6,7])
+binary_heap = BinaryHeap([0, 1, 2, 3, 4, 5, 6, 7])
 binary_heap.display()
 binary_heap.clear()
-binary_heap1 = BinaryHeap([7,6,5,4,3,1])
+binary_heap1 = BinaryHeap([7, 6, 5, 4, 3, 1])
 binary_heap1.display()
 binary_heap1.add(10)
 binary_heap1.add(2)
 binary_heap1.display()
 binary_heap1.clear()
-binary_heap2 = BinaryHeap([7,6,5,4,3,2,1,0])
+binary_heap2 = BinaryHeap([7, 6, 5, 4, 3, 2, 1, 0])
 binary_heap2.display()
 print(binary_heap2.is_min_heap(0))
 binary_heap2.poll()

@@ -9,18 +9,20 @@ TODO: add visualization of BST
 from enum import Enum
 import queue
 
+
 class Order(Enum):
     PRE_ORDER = 0
     IN_ORDER = 1
     POST_ORDER = 2
     LEVEL_ORDER = 3
 
-class Node:
 
+class Node:
     def __init__(self, left, right, el):
         self.data = el
         self.left = left
         self.right = right
+
 
 class BinarySearchTree:
     root: Node = None
@@ -52,7 +54,7 @@ class BinarySearchTree:
                 else:
                     node.right = add_node(node.right, el)
             return node
-        
+
         if self.contains(el):
             return False
         else:
@@ -72,7 +74,7 @@ class BinarySearchTree:
         if node is None:
             return None
 
-        if el < node.data: # < 0
+        if el < node.data:  # < 0
             node.left = self.remove_node(node.left, el)
         elif el > node.data:
             node.right = self.remove_node(node.right, el)
@@ -88,7 +90,7 @@ class BinarySearchTree:
                 # swap the data
                 node.data = tmp.data
                 node.right = self.remove_node(node.right, tmp.data)
-            
+
                 # get the largest node from left subtree
                 # tmp = self.find_max(node.left)
                 # node.data = tmp.data
@@ -126,27 +128,30 @@ class BinarySearchTree:
             if node is None:
                 return 0
             return max(h(node.left), h(node.right)) + 1
+
         return h(self.root)
 
     def traverse(self, node, order):
-        print(f"{order.name}: ",end="")
+        print(f"{order.name}: ", end="")
+
         def rt(node, order):
             if node is None:
                 return None
-            if order is Order.PRE_ORDER: # pre_order_traversal
+            if order is Order.PRE_ORDER:  # pre_order_traversal
                 print(f"{node.data}", end=" ")
                 rt(node.left, Order.PRE_ORDER)
                 rt(node.right, Order.PRE_ORDER)
-            elif order is Order.IN_ORDER: # in_order_traversal
+            elif order is Order.IN_ORDER:  # in_order_traversal
                 rt(node.left, Order.IN_ORDER)
                 print(f"{node.data}", end=" ")
                 rt(node.right, Order.IN_ORDER)
-            elif order is Order.POST_ORDER: # post_order_traversal
+            elif order is Order.POST_ORDER:  # post_order_traversal
                 rt(node.left, Order.POST_ORDER)
                 rt(node.right, Order.POST_ORDER)
                 print(f"{node.data}", end=" ")
-            else: # level_order
+            else:  # level_order
                 self.level_order_traversal(node)
+
         rt(node, order)
         print()
 
@@ -161,7 +166,7 @@ class BinarySearchTree:
                 q.put(node.left)
             if node.right is not None:
                 q.put(node.right)
-    
+
     def iter_pre(self, node, order):
         print(f"{order.name}: ", end="")
         stack = queue.LifoQueue()
@@ -207,7 +212,7 @@ class BinarySearchTree:
                     stack1.append(node.left)
                 if node.right is not None:
                     stack1.append(node.right)
-        
+
         while stack2:
             node = stack2.pop()
             yield node.data

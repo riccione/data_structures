@@ -1,2 +1,5 @@
 lists
 queue/queue
+__pycache__/
+poetry.lock
+pyproject.toml

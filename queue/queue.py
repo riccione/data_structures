@@ -1,7 +1,7 @@
 class Queue:
     def __init__(self):
         self.queue = []
-    
+
     # add a element to the end of the queue
     # FIFO
     def enqueue(self, el):
@@ -33,6 +33,7 @@ class Queue:
             self.queue = r
         else:
             print(f"No element {el} in the queue")
+
 
 x = Queue()
 print(x.queue)
