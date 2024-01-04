@@ -5,8 +5,9 @@ Inspired by William Fiset
 https://github.com/williamfiset/
 """
 from ht_open_addressing import HashTableOpenAddressing
+
+
 class HashTableLinearProbing(HashTableOpenAddressing):
-    
     # const for linear probing
     LINEAR_CONSTANT = 17
 
@@ -22,6 +23,7 @@ class HashTableLinearProbing(HashTableOpenAddressing):
     def adjust_capacity(self):
         while super().gcd(self.LINEAR_CONSTANT, super().get_capacity()) != 1:
             self.capacity += 1
+
 
 """
 ht = HashTableLinearProbing()

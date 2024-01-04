@@ -7,6 +7,7 @@ https://github.com/williamfiset/
 import math
 from abc import ABC, abstractmethod
 
+
 class HashTableOpenAddressing(ABC):
     load_factor = None
     capacity = None
@@ -18,7 +19,7 @@ class HashTableOpenAddressing(ABC):
 
     keys = []
     value = []
-    
+
     # marker token for deletion k-v
     TOMBSTONE = None
 
@@ -33,7 +34,7 @@ class HashTableOpenAddressing(ABC):
         self.threshold = int(self.capacity * self.load_factor)
         self.keys = self.capacity * [None]
         self.values = self.capacity * [None]
-    
+
     @abstractmethod
     def setup_probing(self, key):
         pass
@@ -99,7 +100,7 @@ class HashTableOpenAddressing(ABC):
 
         old_key_table = self.capacity * [None]
         old_value_table = self.capacity * [None]
-        
+
         # key table pointer swap
         key_table_tmp = self.keys
         self.keys = old_key_table
@@ -157,14 +158,15 @@ class HashTableOpenAddressing(ABC):
                         self.keys[j] = k
                         self.values[j] = v
                     self.modification_count += 1
-                    return old_value
-            else: # current cell is None
+                    return v  # old_value
+            else:  # current cell is None, insertion can occur
                 # no previously encountered deleted buckets
                 if j == -1:
                     self.used_buckets += 1
                     self.key_count += 1
                     self.keys[i] = k
                     self.values[i] = v
+                    return v
                 # previously seen deleted bucket
                 else:
                     self.key_count += 1
@@ -182,7 +184,7 @@ class HashTableOpenAddressing(ABC):
 
         self.setup_probing(k)
         offset = self.normalize_index(hash(k))
-        
+
         j = -1
         x = 1
         i = offset
@@ -192,7 +194,6 @@ class HashTableOpenAddressing(ABC):
                     j = i
             elif self.keys[i] is not None:
                 if self.keys[i] == k:
-
                     # if j != -1 => we previously encountered a deleted cell
                     # we can do an optimization by swapping the entries in cells
                     # i and j so that the next time we search for this key it
@@ -204,7 +205,7 @@ class HashTableOpenAddressing(ABC):
                         self.keys[i] = self.TOMBSTONE
                         self.values[i] = None
                     return True
-            else: # key was not found
+            else:  # key was not found
                 return False
             i = self.normalize_index(offset + self.probe(x))
             x += 1
@@ -216,7 +217,7 @@ class HashTableOpenAddressing(ABC):
 
         self.setup_probing(k)
         offset = self.normalize_index(hash(k))
-        
+
         j = -1
         x = 1
         i = offset
@@ -251,13 +252,13 @@ class HashTableOpenAddressing(ABC):
         while True:
             i = self.normalize_index(offset + self.probe(x))
             x += 1
-            
+
             if self.keys[i] is None or self.keys[i] == self.TOMBSTONE:
                 continue
-            
+
             if self.keys[i] is None:
                 return None
-            
+
             if self.keys[i] == k:
                 self.key_count -= 1
                 self.modification_count += 1
@@ -265,7 +266,6 @@ class HashTableOpenAddressing(ABC):
                 self.keys[i] = self.TOMBSTONE
                 self.values[i] = None
                 return old_value
-            
 
     def __str__(self):
         s = "{ "
@@ -276,10 +276,10 @@ class HashTableOpenAddressing(ABC):
         return s
 
     def __repr__(self):
-        s = "{ "
+        s = "{"
         for i in range(self.capacity):
             if self.keys[i] is not None and self.keys[i] != self.TOMBSTONE:
-                s += f"{self.keys[i]} => {self.values[i]}, "
+                s += f"{self.keys[i]}: {self.values[i]}"
         s += "}"
         return s
 
@@ -297,4 +297,3 @@ class HashTableOpenAddressing(ABC):
             if x is not None and x != self.TOMBSTONE:
                 return x
         raise StopIteration
-
