@@ -192,6 +192,49 @@ class TestHTLinearProbing(unittest.TestCase):
                 self.assertEqual(key in d, ht.contains(key))
                 self.assertEqual(len(d), ht.size())
 
+    def test_random_iterator(self):
+        m = HashTableLinearProbing()
+        hm = {}
+
+        for i in range(self.LOOPS):
+            m.clear()
+            hm.clear()
+
+            self.assertEqual(m.size(), len(hm))
+
+            sz = random.randint(1, self.MAX_SIZE)
+            m = HashTableLinearProbing(capacity=sz)
+            # in python size is not important, dictionary aka hashmap is dynamic
+            hm = {}
+
+            probability = random.random()
+
+            for j in range(self.MAX_SIZE):
+                index = random.randint(0, self.MAX_SIZE - 1)
+                l1 = m.get(index)
+                l2 = hm.get(index)
+
+                if l2 is None:
+                    # it is not the same as LL
+                    l1 = []
+                    l2 = []
+                    m.put(index, l1)
+                    hm[index] = l2
+
+                rand_val = random.randint(-self.MAX_SIZE, self.MAX_SIZE)
+
+                if random.random() < probability:
+                    if rand_val in l1:
+                        l1.remove(rand_val)
+                    if rand_val in l2:
+                        l2.remove(rand_val)
+                else:
+                    l1.append(rand_val)
+                    l2.append(rand_val)
+
+                self.assertEqual(m.size(), len(hm))
+                self.assertEqual(l1, l2)
+
     def get_rand_list(self, sz: int):
         # for simplicity we are not going to use sz for creationg of the list
         # however, it is possible to do something like this:
