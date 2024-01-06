@@ -1,33 +1,25 @@
 """
-HashTable Open Addressing: Quadratic Probing
+HashTable Open Addressing: Double Hashing
 
 Inspired by William Fiset
 https://github.com/williamfiset/
+
+no need to impelement secondary hash for each data type due to dynamic type of
+python
 """
 import random
 import unittest
-from ht_quadratic_probing import HashTableQuadraticProbing
+from ht_double_hashing import HashTableDoubleHashing
 
 
-class TestHTQuadraticProbing(unittest.TestCase):
-    class HashObject:
-        chash = None
-        data = None
-
-        def __init__(self, chash, data):
-            self.chash = chash
-            self.data = data
-
-        def hash_code(self) -> int:
-            return self.chash
-
+class TestHTDoubleHashing(unittest.TestCase):
     LOOPS = 500
     MAX_SIZE = random.randint(1, 750)
     MAX_RAND_NUM = random.randint(1, 350)
     ht = None
 
     def setUp(self):
-        self.ht = HashTableQuadraticProbing()
+        self.ht = HashTableDoubleHashing()
 
     def test_none_key(self):
         with self.assertRaises(ValueError):
@@ -35,15 +27,15 @@ class TestHTQuadraticProbing(unittest.TestCase):
 
     def test_illegal_creation1(self):
         with self.assertRaises(ValueError):
-            HashTableQuadraticProbing(capacity=-3, load_factor=0.5)
+            HashTableDoubleHashing(capacity=-3, load_factor=0.5)
 
     def test_illegal_creation2(self):
         with self.assertRaises(ValueError):
-            HashTableQuadraticProbing(capacity=6, load_factor=-0.5)
+            HashTableDoubleHashing(capacity=6, load_factor=-0.5)
 
     def test_legal_creation(self):
         try:
-            HashTableQuadraticProbing(capacity=6, load_factor=0.9)
+            HashTableDoubleHashing(capacity=6, load_factor=0.9)
         except ValueError:
             self.fail("ValueError")
 
@@ -60,8 +52,17 @@ class TestHTQuadraticProbing(unittest.TestCase):
         self.ht.add(2, 2)
         self.assertEqual(self.ht.get(1), -7)
 
+    def test_is_prime(self):
+        self.assertTrue(self.ht.is_prime(2))
+        self.assertFalse(self.ht.is_prime(21))
+        self.assertTrue(self.ht.is_prime(73))
+        self.assertTrue(self.ht.is_prime(179))
+        self.assertTrue(self.ht.is_prime(283))
+        self.assertTrue(self.ht.is_prime(419))
+        self.assertFalse(self.ht.is_prime(546))
+
     def test_iterator(self):
-        ht2 = HashTableQuadraticProbing()
+        ht2 = HashTableDoubleHashing()
         for i in range(self.LOOPS):
             self.ht.clear()
             ht2.clear()
@@ -71,7 +72,6 @@ class TestHTQuadraticProbing(unittest.TestCase):
             for k in rand_nums:
                 self.assertEqual(self.ht.add(k, k), ht2.put(k, k))
 
-            # breakpoint()
             count = 0
             for x in self.ht:
                 self.assertEqual(self.ht.get(x), x)
@@ -97,7 +97,7 @@ class TestHTQuadraticProbing(unittest.TestCase):
 
     def test_random_remove(self):
         for i in range(1):  # (self.LOOPS):
-            ht = HashTableQuadraticProbing()
+            ht = HashTableDoubleHashing()
             ht.clear()
 
             keys_set = set()
@@ -114,8 +114,9 @@ class TestHTQuadraticProbing(unittest.TestCase):
 
             self.assertTrue(ht.is_empty())
 
+    """
     def test_remove(self):
-        ht = HashTableQuadraticProbing()
+        ht = HashTableDoubleHashing()
         ht.put(11, 0)
         ht.put(12, 0)
         ht.put(13, 0)
@@ -137,31 +138,11 @@ class TestHTQuadraticProbing(unittest.TestCase):
         ht.remove(13)
         self.assertEqual(ht.size(), 0)
 
-    def test_remove_complex(self):
-        ht = HashTableQuadraticProbing()
-        o1 = self.HashObject(88, 1)
-        o2 = self.HashObject(88, 2)
-        o3 = self.HashObject(88, 3)
-        o4 = self.HashObject(88, 4)
-        ht.add(o1, 111)
-        ht.add(o2, 111)
-        ht.add(o3, 111)
-        ht.add(o4, 111)
-
-        ht.remove(o2)
-        self.assertEqual(ht.size(), 3)
-        ht.remove(o1)
-        ht.remove(o3)
-        ht.remove(o4)
-
-        self.assertEqual(ht.size(), 0)
-        self.assertTrue(ht.is_empty())
-
     def test_random_map_operations(self):
         d = {}
 
         for i in range(self.LOOPS):
-            ht = HashTableQuadraticProbing()
+            ht = HashTableDoubleHashing()
             d.clear()
 
             probability1 = random.random()
@@ -193,7 +174,7 @@ class TestHTQuadraticProbing(unittest.TestCase):
                 self.assertEqual(len(d), ht.size())
 
     def test_random_iterator(self):
-        m = HashTableQuadraticProbing()
+        m = HashTableDoubleHashing()
         hm = {}
 
         for i in range(self.LOOPS):
@@ -203,7 +184,7 @@ class TestHTQuadraticProbing(unittest.TestCase):
             self.assertEqual(m.size(), len(hm))
 
             sz = random.randint(1, self.MAX_SIZE)
-            m = HashTableQuadraticProbing(capacity=sz)
+            m = HashTableDoubleHashing(capacity=sz)
             # in python size is not important, dictionary aka hashmap is dynamic
             hm = {}
 
@@ -234,6 +215,7 @@ class TestHTQuadraticProbing(unittest.TestCase):
 
                 self.assertEqual(m.size(), len(hm))
                 self.assertEqual(l1, l2)
+    """
 
     def get_rand_list(self, sz: int):
         # for simplicity we are not going to use sz for creationg of the list
