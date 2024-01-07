@@ -21,7 +21,9 @@ class HashTableOpenAddressing(ABC):
     value = []
 
     # marker token for deletion k-v
-    TOMBSTONE = None
+    # it should be an unique object, in this case we can mark deleted elements
+    # with it and during get_value operations do not return None
+    TOMBSTONE = object()
 
     def __init__(self, capacity=7, load_factor=0.65):
         if capacity is None or capacity <= 0:
