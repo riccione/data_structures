@@ -181,6 +181,8 @@ class HashTableOpenAddressing(ABC):
             x += 1
 
     def has_key(self, k) -> bool:
+        return self.get(k) != None
+        """
         if k is None:
             raise ValueError("None key")
 
@@ -211,6 +213,7 @@ class HashTableOpenAddressing(ABC):
                 return False
             i = self.normalize_index(offset + self.probe(x))
             x += 1
+        """
 
     # returns None if value is None or key does not exist
     def get(self, k):

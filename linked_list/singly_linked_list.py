@@ -1,15 +1,15 @@
 """
 Singly linked list: simple implementation
 """
-class Node:
 
+
+class Node:
     def __init__(self, val):
         self.val = val
         self.next = None
 
 
 class LinkedList:
-
     def __init__(self):
         self.head = None
         self.tail = None
@@ -21,7 +21,7 @@ class LinkedList:
     def printl(self):
         if not self.is_empty():
             current = self.head
-            while(current):
+            while current:
                 print(f"{current.val}->", end="")
                 current = current.next
         print("None")
@@ -50,7 +50,7 @@ class LinkedList:
     def pop_back(self):
         rval = self.tail.val
         current = self.head
-        while(current.next.next):
+        while current.next.next:
             current = current.next
         self.tail = current
         current.next = None
