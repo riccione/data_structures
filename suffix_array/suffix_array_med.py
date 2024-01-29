@@ -98,9 +98,11 @@ class SuffixArrayMed(SuffixArray):
         ranks = None
 
 
+"""
 sa = SuffixArrayMed("camel")
 print(sa)
 sa = SuffixArrayMed("AZAZA")
 print(sa)
 sa = SuffixArrayMed(text="ABABBAB")
 print(sa)
+"""

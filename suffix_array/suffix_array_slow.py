@@ -59,9 +59,11 @@ class SuffixArraySlow(SuffixArray):
         suffixes = None
 
 
+"""
 sa = SuffixArraySlow("camel")
 print(sa)
 sa = SuffixArraySlow("AZAZA")
 print(sa)
 sa = SuffixArraySlow(text="ABABBAB")
 print(sa)
+"""

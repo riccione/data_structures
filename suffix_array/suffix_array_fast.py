@@ -24,12 +24,11 @@ class SuffixArrayFast(SuffixArray):
         super().__init__(text)
 
     def construct(self):
-        self.sa = self.N * [0]
-        sa2 = self.N * [0]
-        rank = self.N * [0]
-        c = max(self.alphabet_size, self.N) * [0]
+        self.sa = [0] * self.N
+        sa2 = [0] * self.N
+        rank = [0] * self.N
+        c = [0] * max(self.alphabet_size, self.N)
 
-        i, p, r = 0, 0, 0
         for i in range(self.N):
             rank[i] = self.T[i]
             c[rank[i]] += 1
@@ -46,12 +45,10 @@ class SuffixArrayFast(SuffixArray):
 
         p = 1
         while p < self.N:
-            i = self.N - p
             r = 0
-            while i < self.N:
+            for i in range(self.N - p, self.N):
                 sa2[r] = i
                 r += 1
-                i += 1
 
             for i in range(self.N):
                 if self.sa[i] >= p:
@@ -59,26 +56,21 @@ class SuffixArrayFast(SuffixArray):
                     r += 1
 
             # reset c to int filled with 0
-            c = self.alphabet_size * [0]
+            c = [0] * self.alphabet_size
 
             for i in range(self.N):
                 c[rank[i]] += 1
 
-            i = 1
-            while i < self.alphabet_size:
+            for i in range(1, self.alphabet_size):
                 c[i] += c[i - 1]
-                i += 1
 
-            i = self.N - 1
-            while i >= 0:
-                index = rank[sa2[i]]
-                c[index] -= 1
-                self.sa[c[index]] = sa2[i]
-                i -= 1
+            for i in range(self.N - 1, -1, -1):
+                c[rank[sa2[i]]] -= 1
+                self.sa[c[rank[sa2[i]]]] = sa2[i]
 
             r = sa2[self.sa[0]] = 0
-            i = 1
-            while i < self.N:
+
+            for i in range(1, self.N):
                 if not (
                     rank[self.sa[i - 1] == rank[self.sa[i]]]
                     and self.sa[i - 1] + p < self.N
@@ -87,20 +79,22 @@ class SuffixArrayFast(SuffixArray):
                 ):
                     r += 1
                 sa2[self.sa[i]] = r
-                i += 1
 
             tmp = rank
             rank = sa2
             sa2 = tmp
-            if r == (self.N - 1):
+            if r == self.N - 1:
                 break
             self.alphabet_size = r + 1
             p <<= 1
 
 
+"""
 sa = SuffixArrayFast(text="camel")
 print(sa)
 sa = SuffixArrayFast(text="AZAZA")
 print(sa)
 sa = SuffixArrayFast(text="ABABBAB")
 print(sa)
+"""
+print(SuffixArrayFast(text="B0AB2A3"))
