@@ -138,7 +138,7 @@ class AVLTreeRecursive:
         if el is None:
             return False
 
-        if self.contains(self.root, el):
+        if self._contains(self.root, el):
             self.root = self._remove(self.root, el)
             self.node_count -= 1
             return True
@@ -198,6 +198,8 @@ class AVLTreeRecursive:
         yield node.value
 
     def __str__(self):
+        if self.root is None:
+            return "Tree is empty"
         return TreePrinter.display(self.root)
 
     def validate_bst_invariant(self, node):
