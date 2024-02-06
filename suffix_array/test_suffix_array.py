@@ -84,14 +84,12 @@ class TestSA(unittest.TestCase):
     def test_sa_construction(self):
         # use digits 0-9 to fake unique tokens
         s = "BAAAAB0ABAAAAB1BABA2ABA3AAB4BBBB5BB"
-        # TODO: fast algorithm has a bug and does not create SA correctly
-        # s = "B0AB2A3"
 
         sa1 = SuffixArraySlow(s)
         sa2 = SuffixArrayMed(s)
         sa3 = SuffixArrayFast(s)
 
-        sas = [sa1, sa2]  # , sa3]
+        sas = [sa1, sa2, sa3]
 
         # print(sa1)
         # print(sa2)

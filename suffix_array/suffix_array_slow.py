@@ -13,7 +13,7 @@ from suffix_array import SuffixArray
 class SuffixArraySlow(SuffixArray):
     class Suffix:
         index, l = 0, 0
-        text = []
+        # text = []
 
         def __init__(self, text, index):
             self.l = len(text) - index
@@ -66,4 +66,5 @@ sa = SuffixArraySlow("AZAZA")
 print(sa)
 sa = SuffixArraySlow(text="ABABBAB")
 print(sa)
+print(SuffixArraySlow(text="B0AB2A3"))
 """

@@ -10,11 +10,6 @@ from suffix_array import SuffixArray
 
 class SuffixArrayFast(SuffixArray):
     DEFAULT_ALPHABET_SIZE = 256
-    alphabet_size = 0
-    sa2 = []
-    rank = []
-    tmp = []
-    c = []
 
     def __init__(self, text, alphabet_size=DEFAULT_ALPHABET_SIZE):
         self.alphabet_size = alphabet_size
@@ -64,15 +59,17 @@ class SuffixArrayFast(SuffixArray):
             for i in range(1, self.alphabet_size):
                 c[i] += c[i - 1]
 
-            for i in range(self.N - 1, -1, -1):
+            i = self.N - 1
+            while i >= 0:
+                self.sa[c[rank[sa2[i]]] - 1] = sa2[i]
                 c[rank[sa2[i]]] -= 1
-                self.sa[c[rank[sa2[i]]]] = sa2[i]
+                i -= 1
 
-            r = sa2[self.sa[0]] = 0
+            sa2[self.sa[0]] = r = 0
 
             for i in range(1, self.N):
                 if not (
-                    rank[self.sa[i - 1] == rank[self.sa[i]]]
+                    rank[self.sa[i - 1]] == rank[self.sa[i]]
                     and self.sa[i - 1] + p < self.N
                     and self.sa[i] + p < self.N
                     and rank[self.sa[i - 1] + p] == rank[self.sa[i] + p]
@@ -80,11 +77,11 @@ class SuffixArrayFast(SuffixArray):
                     r += 1
                 sa2[self.sa[i]] = r
 
-            tmp = rank
-            rank = sa2
-            sa2 = tmp
+            rank, sa2 = sa2, rank
+
             if r == self.N - 1:
                 break
+
             self.alphabet_size = r + 1
             p <<= 1
 
@@ -96,5 +93,5 @@ sa = SuffixArrayFast(text="AZAZA")
 print(sa)
 sa = SuffixArrayFast(text="ABABBAB")
 print(sa)
-"""
 print(SuffixArrayFast(text="B0AB2A3"))
+"""
