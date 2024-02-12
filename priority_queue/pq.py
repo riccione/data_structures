@@ -9,12 +9,16 @@ https://github.com/williamfiset/Algorithms/
 class BinaryHeap:
     heap = []
 
-    def __init__(self, xs):
-        heap_size = len(xs)
-        for x in xs:
-            self.heap.append(x)
+    def __init__(self, xs = None):
+        if xs is None:
+            self.heap = []
+        else:
+            self.heap = xs
+            self.heapify(self.heap)
 
+    def heapify(self, xs):
         # heapify, O(n)
+        heap_size = len(xs)
         i = max(0, heap_size // 2 - 1)
         while i >= 0:
             self.sink(i)
@@ -30,7 +34,7 @@ class BinaryHeap:
         return len(self.heap)
 
     def peek(self):
-        if is_empty:
+        if self.is_empty():
             return None
         return self.heap[0]
 
@@ -40,33 +44,12 @@ class BinaryHeap:
 
     # O(n)
     def contains(self, el):
-        for x in self.heap:
-            if x == el:
-                return True
-        return False
-
-    def display(self):
-        n = self.size()
-        i = 0
-        level = 0
-        while i < n:
-            level_nodes = 2**level
-            for j in range(level_nodes):
-                if i < n:
-                    print(self.heap[i], end=" ")
-                    i += 1
-                else:
-                    break
-            print()
-            level += 1
-        print()
-        # for i, x in enumerate(self.heap):
-        #    print(f"{x}--", end="")
-        # print()
+        # solved in python way, another approach - iterate and if el ==
+        # self.heap[x] => return True
+        return el in self.heap
 
     # top down node sink O(log(n))
     def sink(self, k):
-        # breakpoint()
         heap_size = self.size()
         while True:
             left = 2 * k + 1
@@ -90,7 +73,6 @@ class BinaryHeap:
         while k > 0 and self.less(k, parent):
             self.swap(parent, k)
             k = parent
-
             parent = (k - 1) // 2
 
     def less(self, i, j):
@@ -101,8 +83,7 @@ class BinaryHeap:
 
     def add(self, el):
         if el is None:
-            print("None element cannot be added")
-            return
+            raise ValueError("None element cannot be added")
 
         self.heap.append(el)
 
@@ -114,7 +95,7 @@ class BinaryHeap:
         if el is None:
             return False
 
-        for i, x in self.heap:
+        for i,x in enumerate(self.heap):
             if el == x:
                 self.remove_at(i)
                 return True
@@ -163,10 +144,32 @@ class BinaryHeap:
 
         # recursion
         return self.is_min_heap(left) and self.is_min_heap(right)
+    
+    def __str__(self):
+        n = self.size()
+        i = 0
+        level = 0
+        r = ""
+        print(self.heap)
+        while i < n:
+            level_nodes = 2**level
+            for j in range(level_nodes):
+                if i < n:
+                    r += str(self.heap[i]) + " "
+                    i += 1
+                else:
+                    break
+            r += "\n"
+            level += 1
+        return r
+
 
 
 binary_heap = BinaryHeap([0, 1, 2, 3, 4, 5, 6, 7])
-binary_heap.display()
+print(binary_heap)
+binary_heap1 = BinaryHeap([7, 6, 5, 4, 3, 1])
+print(binary_heap1)
+"""
 binary_heap.clear()
 binary_heap1 = BinaryHeap([7, 6, 5, 4, 3, 1])
 binary_heap1.display()
@@ -179,3 +182,4 @@ binary_heap2.display()
 print(binary_heap2.is_min_heap(0))
 binary_heap2.poll()
 binary_heap2.display()
+"""
