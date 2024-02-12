@@ -5,7 +5,7 @@ Inspired by Willam Fiset Java implementation
 https://github.com/williamfiset/Algorithms/
 """
 import unittest
-from pq import BinaryHeap
+from binary_heap import BinaryHeap
 
 class TestBinaryHeap(unittest.TestCase):
 
