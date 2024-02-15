@@ -5,9 +5,8 @@ Inspired by Willam Fiset Java implementation
 https://github.com/williamfiset/Algorithms/
 """
 
+
 class MinIndexedHeap:
-
-
     def __init__(self, degree: int, max_size: int):
         if max_size <= 0:
             raise ValueError("max_size <= 0")
@@ -21,10 +20,10 @@ class MinIndexedHeap:
         # inverse map = stores indexes of the keys in the range (0, sz] which
         # make up the PQ. im is inverse of pm, so pm[im[i]] = im[pm[i]] = i
         self.im = [-1] * self.N
-        
+
         # position map maps Key Indexes (ki)
         self.pm = [-1] * self.N
-        
+
         # lookup arrays to track the child/parent indexes of each node
         self.child = [0] * self.N
         self.parent = [0] * self.N
@@ -40,7 +39,6 @@ class MinIndexedHeap:
         for i in range(self.N):
             self.parent[i] = (i - 1) // D
             self.child[i] = i * D + 1
-
 
     def size(self) -> int:
         return self.sz

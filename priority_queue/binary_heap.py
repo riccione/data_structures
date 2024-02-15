@@ -9,7 +9,7 @@ https://github.com/williamfiset/Algorithms/
 class BinaryHeap:
     heap = []
 
-    def __init__(self, xs = None):
+    def __init__(self, xs=None):
         if xs is None:
             self.heap = []
         else:
@@ -25,7 +25,7 @@ class BinaryHeap:
             i -= 1
 
     def is_empty(self):
-        return self.size == 0
+        return self.size() == 0
 
     def clear(self):
         self.heap.clear()
@@ -95,7 +95,7 @@ class BinaryHeap:
         if el is None:
             return False
 
-        for i,x in enumerate(self.heap):
+        for i, x in enumerate(self.heap):
             if el == x:
                 self.remove_at(i)
                 return True
@@ -144,7 +144,7 @@ class BinaryHeap:
 
         # recursion
         return self.is_min_heap(left) and self.is_min_heap(right)
-    
+
     def __str__(self):
         n = self.size()
         i = 0
@@ -164,12 +164,11 @@ class BinaryHeap:
         return r
 
 
-
+"""
 binary_heap = BinaryHeap([0, 1, 2, 3, 4, 5, 6, 7])
 print(binary_heap)
 binary_heap1 = BinaryHeap([7, 6, 5, 4, 3, 1])
 print(binary_heap1)
-"""
 binary_heap.clear()
 binary_heap1 = BinaryHeap([7, 6, 5, 4, 3, 1])
 binary_heap1.display()
