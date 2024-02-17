@@ -1,12 +1,12 @@
 """
 Indexed Priority Queue
 
-Inspired by Willam Fiset Java implementation
+Inspired by William Fiset Java implementation
 https://github.com/williamfiset/Algorithms/
 """
 
 
-class MinIndexedHeap:
+class MinIndexedDHeap:
     def __init__(self, degree: int, max_size: int):
         if max_size <= 0:
             raise ValueError("max_size <= 0")
@@ -31,14 +31,14 @@ class MinIndexedHeap:
         # values associated with the key. This array is indexed by the key
         # indexes (ki)
         # in python it is not necessary to make each el as an Object
-        self.values = [0] * self.N
+        self.values = [None] * self.N
 
         # current number of elements in the heap
         self.sz = 0
 
         for i in range(self.N):
-            self.parent[i] = (i - 1) // D
-            self.child[i] = i * D + 1
+            self.parent[i] = (i - 1) // self.D
+            self.child[i] = i * self.D + 1
 
     def size(self) -> int:
         return self.sz
@@ -61,7 +61,7 @@ class MinIndexedHeap:
 
     def peek_min_value(self):
         self.is_not_empty_or_throw()
-        return self.values[im[0]]
+        return self.values[self.im[0]]
 
     def poll_min_value(self):
         min_value = self.peek_min_value()
@@ -72,11 +72,12 @@ class MinIndexedHeap:
         if self.contains(ki):
             raise ValueError(f"Index already exists; received {ki}")
         self.value_not_null_or_throw(value)
+
         self.pm[ki] = self.sz
-        self.im[sz] = ki
+        self.im[self.sz] = ki
         self.values[ki] = value
-        self.sz += 1
         self.swim(self.sz)
+        self.sz += 1
 
     def value_of(self, ki: int):
         self.key_exists_or_throw(ki)
@@ -85,14 +86,14 @@ class MinIndexedHeap:
     def delete(self, ki: int):
         self.key_exists_or_throw(ki)
         i = self.pm[ki]
+        self.swap(i, self.sz - 1)
         self.sz -= 1
-        self.swap(i, self.sz)
         self.sink(i)
         self.swim(i)
         value = self.values[ki]
         self.values[ki] = None
         self.pm[ki] = -1
-        self.im[ki] = -1
+        self.im[self.sz] = -1
         return value
 
     def update(self, ki: int, value):
@@ -106,13 +107,13 @@ class MinIndexedHeap:
 
     def decrease(self, ki: int, value):
         self.key_exists_and_value_not_null_or_throw(ki, value)
-        if self.less(value, self.values[ki]):
+        if value < self.values[ki]:
             self.values[ki] = value
             self.swim(self.pm[ki])
 
     def increase(self, ki: int, value):
         self.key_exists_and_value_not_null_or_throw(ki, value)
-        if self.less(self.values[ki], value):
+        if self.values[ki] < value:
             self.values[ki] = value
             self.sink(self.pm[ki])
 
@@ -125,28 +126,31 @@ class MinIndexedHeap:
             j = self.min_child(i)
 
     def swim(self, i: int):
-        while self.less(i, self.parent[i]):
+        while i > 0 and self.less(i, self.parent[i]):
             self.swap(i, self.parent[i])
             i = self.parent[i]
 
     def min_child(self, i: int) -> int:
         index = -1
-        from_ = self.child[i]
-        to_ = min(self.sz, from_ + self.D)
-        j = from_
-        while j < to_:
+        start = self.child[i]
+        end = min(self.sz, start + self.D)
+        j = start
+        for j in range(start, end):
             if self.less(j, i):
                 index = i = j
-                j += 1
         return index
 
     def swap(self, i: int, j: int):
-        self.pm[im[j]] = i
-        self.pm[im[i]] = j
-        im[i], im[j] = im[j], im[i]
+        self.pm[self.im[j]] = i
+        self.pm[self.im[i]] = j
+        self.im[i], self.im[j] = self.im[j], self.im[i]
 
     def less(self, i: int, j: int) -> bool:
-        return self.values[im[i]] < self.values[im[j]]
+        v1 = self.values[self.im[i]]
+        v2 = self.values[self.im[j]]
+        if v1 and v2:
+            return v1 < v2
+        return i < j
 
     def __str__(self):
         return " ".join(str(x) for x in self.im)
@@ -165,7 +169,7 @@ class MinIndexedHeap:
             raise ValueError(f"Index does not exist; {ki}")
 
     def value_not_null_or_throw(self, value):
-        if not value:
+        if value is None:
             raise ValueError("value cannot be None")
 
     def key_in_bounds_or_throw(self, ki: int):
