@@ -148,11 +148,14 @@ class MinIndexedDHeap:
     def less(self, i: int, j: int) -> bool:
         v1 = self.values[self.im[i]]
         v2 = self.values[self.im[j]]
-        if v1 and v2:
+        if v1 is not None and v2 is not None:
             return v1 < v2
         return i < j
 
     def __str__(self):
+        return " ".join(str(x) for x in self.im)
+
+    def __repr__(self):
         return " ".join(str(x) for x in self.im)
 
     # helper fn
@@ -178,7 +181,7 @@ class MinIndexedDHeap:
 
     # test fn
     def is_min_heap(self) -> bool:
-        return _is_min_heap(0)
+        return self._is_min_heap(0)
 
     def _is_min_heap(self, i: int) -> bool:
         from_ = self.child[i]

@@ -15,6 +15,7 @@ https://github.com/williamfiset/Algorithms/
 """
 
 import random
+import heapq
 from min_indexed_binary_heap import MinIndexedBinaryHeap
 import unittest
 
@@ -175,11 +176,85 @@ class TestMinIndexedBinaryHeap(unittest.TestCase):
         self.assertEqual(pq.value_of(1), 101)
 
     def test_random_insertions_and_polls(self):
-        # TODO: implement
-        pass
+        for n in range(1, 1001):
+            bound = 100000
+            random_values = self.gen_rand_array(n, -bound, bound)
+            pq1 = MinIndexedBinaryHeap(n)
+            pq2 = []
+
+            p = random.random()
+
+            for i in range(n):
+                pq1.insert(i, random_values[i])
+                heapq.heappush(pq2, random_values[i])
+
+                if random.random() < p:
+                    if pq2:
+                        self.assertEqual(pq1.poll_min_value(), heapq.heappop(pq2))
+                        heapq.heapify(pq2)
+
+                self.assertEqual(pq1.size(), len(pq2))
+                self.assertEqual(pq1.is_empty(), len(pq2) == 0)
+
+                if pq2:
+                    self.assertEqual(pq1.peek_min_value(), pq2[0])
+
+    def test_random_insertions_and_removals(self):
+        for n in range(1, 500):
+            indexes = self.gen_unique_rand_list(n)
+            pq1 = MinIndexedBinaryHeap(n)
+            pq2 = []
+            indexes_to_remove = []
+
+            p = random.random()
+
+            for i in range(n):
+                ii = indexes[i]
+                pq1.insert(ii, ii)
+                heapq.heappush(pq2, ii)
+                indexes_to_remove.append(ii)
+                self.assertTrue(pq1.is_min_heap())
+
+                if random.random() < p:
+                    items_to_remove = int(random.random() * 10)
+                    while items_to_remove > 0 and len(indexes_to_remove) > 0:
+                        iii = int(random.random() * len(indexes_to_remove))
+                        index_to_remove = indexes_to_remove[iii]
+                        contains1 = pq1.contains(index_to_remove)
+                        contains2 = index_to_remove in pq2
+                        # breakpoint()
+                        self.assertEqual(contains1, contains2)
+                        self.assertTrue(pq1.is_min_heap())
+                        if contains2:
+                            pq1.delete(index_to_remove)
+                            pq2.remove(index_to_remove)
+                            heapq.heapify(pq2)
+                            indexes_to_remove.remove(index_to_remove)
+
+                        if pq2:
+                            self.assertEqual(pq1.peek_min_value(), pq2[0])
+
+                        items_to_remove -= 1
+
+            for x in indexes_to_remove:
+                self.assertTrue(pq1.contains(x))
+                self.assertTrue(x in pq2)
+
+            self.assertEqual(pq1.size(), len(pq2))
+            self.assertEqual(pq1.is_empty(), len(pq2) == 0)
+            if pq2:
+                self.assertEqual(pq1.peek_min_value(), pq2[0])
 
     def sort_pairs_by_value(self, pairs):
         return sorted(pairs, key=lambda x: x[1])
+
+    def gen_rand_array(self, n: int, lo: int, hi: int):
+        return [random.randint(lo, hi) for _ in range(n)]
+
+    def gen_unique_rand_list(self, n: int):
+        lst = [x for x in range(n)]
+        random.shuffle(lst)
+        return lst
 
 
 if __name__ == "__main__":
