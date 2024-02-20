@@ -1,7 +1,7 @@
 """
 Priority Queue
 
-Inspired by Willam Fiset Java implementation
+Inspired by William Fiset Java implementation
 https://github.com/williamfiset/Algorithms/
 """
 
