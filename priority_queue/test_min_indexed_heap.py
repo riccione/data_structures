@@ -174,6 +174,7 @@ class TestMinIndexedBinaryHeap(unittest.TestCase):
         self.assertEqual(pq.peek_min_value(), 101)
         self.assertEqual(pq.peek_min_key_index(), 1)
         self.assertEqual(pq.value_of(1), 101)
+        print(pq)
 
     def test_random_insertions_and_polls(self):
         for n in range(1, 1001):

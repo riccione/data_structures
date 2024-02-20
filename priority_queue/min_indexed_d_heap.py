@@ -153,10 +153,16 @@ class MinIndexedDHeap:
         return i < j
 
     def __str__(self):
-        return " ".join(str(x) for x in self.im)
+        pm = " | ".join("{:<7}".format(str(x)) for x in self.pm)
+        im = " | ".join("{:<7}".format(str(x)) for x in self.im)
+        v = " | ".join("{:<7}".format(str(x)) for x in self.values)
+        return f"\npm:\t{pm}\nim:\t{im}\nvalues:\t{v}"
 
     def __repr__(self):
-        return " ".join(str(x) for x in self.im)
+        pm = " | ".join("{:<7}".format(str(x)) for x in self.pm)
+        im = " | ".join("{:<7}".format(str(x)) for x in self.im)
+        v = " | ".join("{:<7}".format(str(x)) for x in self.values)
+        return f"\npm:\t{pm}\nim:\t{im}\nvalues:\t{v}"
 
     # helper fn
     def is_not_empty_or_throw(self):
