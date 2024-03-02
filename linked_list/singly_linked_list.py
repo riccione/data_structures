@@ -1,5 +1,8 @@
 """
 Singly linked list: simple implementation
+
+Inspired by William Fiset
+https://github.com/williamfiset/
 """
 
 
@@ -15,16 +18,21 @@ class LinkedList:
         self.tail = None
         self.len = 0
 
-    def is_empty(self):
-        return self.len == 0
+    def size(self):
+        return self.len
 
-    def printl(self):
+    def is_empty(self):
+        return self.size() == 0
+
+    def __str__(self):
+        sx = ""
         if not self.is_empty():
             current = self.head
             while current:
-                print(f"{current.val}->", end="")
+                sx += f"{current.val}->"
                 current = current.next
-        print("None")
+        sx += "None"
+        return sx
 
     def push_back(self, val):
         if self.is_empty():
@@ -48,6 +56,8 @@ class LinkedList:
         self.len += 1
 
     def pop_back(self):
+        if self.is_empty():
+            raise ValueError("Empty list")
         rval = self.tail.val
         current = self.head
         while current.next.next:
@@ -58,16 +68,28 @@ class LinkedList:
         return rval
 
     def pop_front(self):
+        if self.is_empty():
+            raise ValueError("Empty list")
         rval = self.head.val
         new_head = self.head.next
         self.head = new_head
         self.len -= 1
         return rval
 
+    def peek_first(self):
+        if self.is_empty():
+            raise ValueError("Empty list")
+        return self.head.val
+
+    def peek_last(self):
+        if self.is_empty():
+            raise ValueError("Empty list")
+        return self.tail.val
+
 
 list = LinkedList()
 
-list.printl()
+print(list)
 """
 l1 = Node(100)
 list.len += 1
@@ -84,12 +106,12 @@ list.printl()
 list.push_back(102)
 list.push_back(103)
 list.push_back(104)
-list.printl()
+print(list)
 list.push_front(99)
-list.printl()
+print(list)
 print(f"pop_back: {list.pop_back()}")
-list.printl()
+print(list)
 print(list.head.val, list.tail.val)
 print(f"pop_front: {list.pop_front()}")
-list.printl()
+print(list)
 print(f"Head: {list.head.val}, tail: {list.tail.val}")
