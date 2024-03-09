@@ -8,7 +8,9 @@ TODO: add visualization of BST
 """
 from enum import Enum
 import queue
-
+import sys
+sys.path.append('../utils')
+from tree_printer import TreePrinter
 
 class Order(Enum):
     PRE_ORDER = 0
@@ -19,7 +21,7 @@ class Order(Enum):
 
 class Node:
     def __init__(self, left, right, el):
-        self.data = el
+        self.value = el
         self.left = left
         self.right = right
 
@@ -29,10 +31,10 @@ class BinarySearchTree:
     node_count = 0
 
     def is_empty(self) -> bool:
-        return size() == 0
+        return self.size() == 0
 
     def size(self) -> int:
-        return node_count
+        return self.node_count
 
     def add(self, el) -> bool:
         # returns Node
@@ -49,7 +51,7 @@ class BinarySearchTree:
                 node = Node(None, None, el)
             else:
                 # comparator < 0
-                if el < node.data:
+                if el < node.value:
                     node.left = add_node(node.left, el)
                 else:
                     node.right = add_node(node.right, el)
@@ -74,9 +76,9 @@ class BinarySearchTree:
         if node is None:
             return None
 
-        if el < node.data:  # < 0
+        if el < node.value:  # < 0
             node.left = self.remove_node(node.left, el)
-        elif el > node.data:
+        elif el > node.value:
             node.right = self.remove_node(node.right, el)
         else:
             # only a right subtree
@@ -87,14 +89,14 @@ class BinarySearchTree:
             else:
                 # get the smallest node from right subtree
                 tmp = self.find_min(node.right)
-                # swap the data
-                node.data = tmp.data
-                node.right = self.remove_node(node.right, tmp.data)
+                # swap the value
+                node.value = tmp.value
+                node.right = self.remove_node(node.right, tmp.value)
 
                 # get the largest node from left subtree
                 # tmp = self.find_max(node.left)
-                # node.data = tmp.data
-                # node.left = self.remove_node(node.left, tmp.data)
+                # node.value = tmp.value
+                # node.left = self.remove_node(node.left, tmp.value)
 
         return node
 
@@ -116,9 +118,9 @@ class BinarySearchTree:
         if node is None:
             return False
 
-        if el < node.data:
+        if el < node.value:
             return self.contains_node(node.left, el)
-        elif el > node.data:
+        elif el > node.value:
             return self.contains_node(node.right, el)
         else:
             return True
@@ -138,17 +140,17 @@ class BinarySearchTree:
             if node is None:
                 return None
             if order is Order.PRE_ORDER:  # pre_order_traversal
-                print(f"{node.data}", end=" ")
+                print(f"{node.value}", end=" ")
                 rt(node.left, Order.PRE_ORDER)
                 rt(node.right, Order.PRE_ORDER)
             elif order is Order.IN_ORDER:  # in_order_traversal
                 rt(node.left, Order.IN_ORDER)
-                print(f"{node.data}", end=" ")
+                print(f"{node.value}", end=" ")
                 rt(node.right, Order.IN_ORDER)
             elif order is Order.POST_ORDER:  # post_order_traversal
                 rt(node.left, Order.POST_ORDER)
                 rt(node.right, Order.POST_ORDER)
-                print(f"{node.data}", end=" ")
+                print(f"{node.value}", end=" ")
             else:  # level_order
                 self.level_order_traversal(node)
 
@@ -161,7 +163,7 @@ class BinarySearchTree:
         q.put(node)
         while node is not None and not q.empty():
             node = q.get()
-            print(node.data, end=" ")
+            print(node.value, end=" ")
             if node.left is not None:
                 q.put(node.left)
             if node.right is not None:
@@ -173,8 +175,8 @@ class BinarySearchTree:
         stack.put(node)
         while node is not None and not stack.empty():
             node = stack.get()
-            # print(node.data, end=" ")
-            yield node.data
+            # print(node.value, end=" ")
+            yield node.value
             if node.right is not None:
                 stack.put(node.right)
             if node.left is not None:
@@ -197,7 +199,7 @@ class BinarySearchTree:
                 stack.put(node.right)
                 trav = node.right
 
-            yield node.data
+            yield node.value
 
     def iter_post(self, node, order):
         print(f"{order.name}: ", end="")
@@ -215,8 +217,12 @@ class BinarySearchTree:
 
         while stack2:
             node = stack2.pop()
-            yield node.data
+            yield node.value
 
+    def __str__(self):
+        if self.root is None:
+            return "Tree is empty"
+        return TreePrinter.display(self.root)
 
 bst = BinarySearchTree()
 bst.add(11)
@@ -231,7 +237,7 @@ bst.add(5)
 bst.add(12)
 bst.add(14)
 bst.add(19)
-print(bst.root.data)
+print(bst.root.value)
 print(bst.node_count)
 print(bst.height())
 print(bst.contains(6))
@@ -256,7 +262,7 @@ for c in xs:
 print()
 
 bst.traverse(bst.root, Order.LEVEL_ORDER)
-print(bst.root.data)
+print(bst.root.value)
 print(bst.contains_node(bst.root, 6))
 print(bst.contains(6))
 bst.remove(6)

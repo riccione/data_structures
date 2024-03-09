@@ -1,3 +1,9 @@
+"""
+Graph Theory: DFS
+
+Inspired by William Fiset
+https://github.com/williamfiset/
+"""
 from adjacency_list import AdjacencyList
 
 
