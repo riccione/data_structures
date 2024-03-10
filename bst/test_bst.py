@@ -6,6 +6,7 @@ https://github.com/williamfiset/
 """
 
 import unittest
+import random
 from bst import BinarySearchTree
 
 
@@ -55,6 +56,74 @@ class TestBinarySearchTree(unittest.TestCase):
         self.assertEqual(self.tree.height(), 4)
 
         print(self.tree)
+
+    def test_add(self):
+        self.assertTrue(self.tree.add("A"))
+
+        # add a duplicate
+        self.assertFalse(self.tree.add("A"))
+
+        # add a second el
+        self.assertTrue(self.tree.add("B"))
+
+    def test_remove(self):
+        # try to remove non-existing el
+        self.tree.add("A")
+        self.assertEqual(self.tree.size(), 1)
+        self.assertFalse(self.tree.remove("B"))
+        self.assertEqual(self.tree.size(), 1)
+
+        # try to remove existing el
+        self.tree.add("B")
+        self.assertEqual(self.tree.size(), 2)
+        self.assertTrue(self.tree.remove("B"))
+        self.assertEqual(self.tree.size(), 1)
+        self.assertEqual(self.tree.height(), 1)
+
+        # try to remove root
+        self.assertTrue(self.tree.remove("A"))
+        self.assertEqual(self.tree.size(), 0)
+        self.assertEqual(self.tree.height(), 0)
+
+    def test_contains(self):
+        self.tree.add("B")
+        self.tree.add("A")
+        self.tree.add("C")
+
+        # try looking for a non-existing el
+        self.assertFalse(self.tree.contains("D"))
+
+        # try looking for an existing el in root
+        self.assertTrue(self.tree.contains("B"))
+
+        # try looking for an existing el on left
+        self.assertTrue(self.tree.contains("A"))
+
+        # try looking for an existing el on right
+        self.assertTrue(self.tree.contains("C"))
+
+    def test_random_remove(self):
+        for i in range(self.LOOPS):
+            sz = i
+            lst = self.gen_rand_list(sz)
+
+            for v in lst:
+                self.tree.add(v)
+
+            random.shuffle(lst)
+
+            for j in range(sz):
+                x = lst[j]
+                self.assertTrue(self.tree.remove(x))
+                self.assertFalse(self.tree.contains(x))
+                self.assertEqual(self.tree.size(), sz - j - 1)
+
+            self.assertTrue(self.tree.is_empty())
+
+    def gen_rand_list(self, sz):
+        lst = [i for i in range(sz)]
+        random.shuffle(lst)
+        return lst
 
 
 if __name__ == "__main__":

@@ -69,7 +69,7 @@ class BinarySearchTree:
     # remove a value from BST O(n)
     def remove(self, el) -> bool:
         if self.contains(el):
-            root = self.remove_node(self.root, el)
+            self.root = self.remove_node(self.root, el)
             self.node_count -= 1
             return True
         return False
