@@ -223,6 +223,11 @@ class BinarySearchTree:
         if self.root is None:
             return "Tree is empty"
         return TreePrinter.display(self.root)
+    
+    def __repr__(self):
+        if self.root is None:
+            return "Tree is empty"
+        return TreePrinter.display(self.root)
 
 bst = BinarySearchTree()
 bst.add(11)
@@ -267,3 +272,4 @@ print(bst.contains_node(bst.root, 6))
 print(bst.contains(6))
 bst.remove(6)
 bst.traverse(bst.root, Order.IN_ORDER)
+print(bst)
