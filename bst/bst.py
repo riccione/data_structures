@@ -9,8 +9,10 @@ TODO: add visualization of BST
 from enum import Enum
 import queue
 import sys
-sys.path.append('../utils')
+
+sys.path.append("../utils")
 from tree_printer import TreePrinter
+
 
 class Order(Enum):
     PRE_ORDER = 0
@@ -223,11 +225,10 @@ class BinarySearchTree:
         if self.root is None:
             return "Tree is empty"
         return TreePrinter.display(self.root)
-    
+
     def __repr__(self):
-        if self.root is None:
-            return "Tree is empty"
-        return TreePrinter.display(self.root)
+        return self.__str__()
+
 
 bst = BinarySearchTree()
 bst.add(11)

@@ -8,8 +8,8 @@ https://github.com/williamfiset/
 import unittest
 from bst import BinarySearchTree
 
+
 class TestBinarySearchTree(unittest.TestCase):
-    
     LOOPS = 100
 
     def setUp(self):
@@ -18,7 +18,7 @@ class TestBinarySearchTree(unittest.TestCase):
     def test_is_empty(self):
         tree = BinarySearchTree()
         self.assertTrue(tree.is_empty())
-        
+
         tree.add("Hello World!")
         self.assertFalse(tree.is_empty())
 
@@ -41,7 +41,7 @@ class TestBinarySearchTree(unittest.TestCase):
         self.assertEqual(self.tree.height(), 2)
         self.tree.add("S")
         self.assertEqual(self.tree.height(), 2)
-        
+
         # layer tre
         self.tree.add("B")
         self.assertEqual(self.tree.height(), 3)
@@ -53,8 +53,9 @@ class TestBinarySearchTree(unittest.TestCase):
         # layer quatro
         self.tree.add("A")
         self.assertEqual(self.tree.height(), 4)
-        
+
         print(self.tree)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     unittest.main()

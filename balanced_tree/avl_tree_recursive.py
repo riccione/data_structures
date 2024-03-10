@@ -5,7 +5,8 @@ Inspired by William Fiset
 https://github.com/williamfiset/
 """
 import sys
-sys.path.append('../utils')
+
+sys.path.append("../utils")
 from tree_printer import TreePrinter
 
 
