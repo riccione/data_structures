@@ -3,8 +3,6 @@ Binary Search Tree (BST)
 
 Inspired by William Fiset
 https://github.com/williamfiset/
-
-TODO: add visualization of BST
 """
 from enum import Enum
 import queue
