@@ -40,7 +40,6 @@ class BinarySearchTree:
         # returns Node
         # recursion
         def add_node(node, el):
-            # breakpoint()
             # special case for root node
             if self.root is None:
                 self.root = Node(None, None, el)
@@ -60,9 +59,25 @@ class BinarySearchTree:
         if self.contains(el):
             return False
         else:
-            root = add_node(self.root, el)
+            self.root = add_node(self.root, el)
             self.node_count += 1
             return True
+
+    # !!not safe fn to use - only to validate tree traversal
+    # I need to use this fn, because this tree implementation is not
+    # self-balanced and it is easy to get a tree like
+    # 1
+    # \
+    # 2
+    # \
+    # 3 ...
+    def _add(self, node, el, branch=None):
+        if branch == "left":
+            node.left = Node(None, None, el)
+        else:
+            node.right = Node(None, None, el)
+        self.node_count += 1
+        return node
 
     # remove a value from BST O(n)
     def remove(self, el) -> bool:
@@ -272,3 +287,12 @@ print(bst.contains(6))
 bst.remove(6)
 bst.traverse(bst.root, Order.IN_ORDER)
 print(bst)
+x = BinarySearchTree()
+x.add(8)
+x._add(x.root, 3, "left")
+x._add(x.root.left, 1, "left")
+x._add(x.root.left, 6, "right")
+x._add(x.root, 10, "right")
+x._add(x.root.right, 9, "left")
+x._add(x.root.right, 14, "right")
+print(x)

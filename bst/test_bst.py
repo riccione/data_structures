@@ -8,6 +8,7 @@ https://github.com/williamfiset/
 import unittest
 import random
 from bst import BinarySearchTree
+from bst import Order
 
 
 class TestBinarySearchTree(unittest.TestCase):
@@ -124,6 +125,20 @@ class TestBinarySearchTree(unittest.TestCase):
         lst = [i for i in range(sz)]
         random.shuffle(lst)
         return lst
+
+    def test_simple_tree_traversal(self):
+        # TODO: implement
+        self.tree.add(1)
+        self.tree.add(5)
+        self.tree.add(2)
+        self.tree.add(3)
+        self.tree.add(6)
+        # self.tree.add(2)
+        # self.tree.add(7)
+        print(self.tree)
+        expected = [4, 2, 5, 1, 6, 3, 7]
+
+        self.tree.traverse(self.tree.root, Order.IN_ORDER)
 
 
 if __name__ == "__main__":
