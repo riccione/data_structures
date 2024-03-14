@@ -126,19 +126,38 @@ class TestBinarySearchTree(unittest.TestCase):
         random.shuffle(lst)
         return lst
 
+    # in this test I don't use Binary Search Tree
+    # it is just Binary Tree - this is done for simplicity
     def test_simple_tree_traversal(self):
-        # TODO: implement
-        self.tree.add(1)
-        self.tree.add(5)
-        self.tree.add(2)
-        self.tree.add(3)
-        self.tree.add(6)
-        # self.tree.add(2)
-        # self.tree.add(7)
-        print(self.tree)
-        expected = [4, 2, 5, 1, 6, 3, 7]
+        x = BinarySearchTree()
+        x.add(1)
+        x._add(x.root, 2, "left")
+        x._add(x.root.left, 4, "left")
+        x._add(x.root.left, 5, "right")
+        x._add(x.root, 3, "right")
+        x._add(x.root.right, 6, "left")
+        x._add(x.root.right, 7, "right")
+        print(x)
+        expected_inorder = [4, 2, 5, 1, 6, 3, 7]
+        expected_preorder = [1, 2, 4, 5, 3, 6, 7]
+        expected_postorder = [4, 5, 2, 6, 7, 3, 1]
 
-        self.tree.traverse(self.tree.root, Order.IN_ORDER)
+        # self.tree.traverse(self.tree.root, Order.IN_ORDER)
+        i = 0
+        for c in x.iter_in(x.root, Order.IN_ORDER):
+            self.assertEqual(c, expected_inorder[i])
+            # print(c, end=" ")
+            i += 1
+
+        i = 0
+        for c in x.iter_pre(x.root, Order.PRE_ORDER):
+            self.assertEqual(c, expected_preorder[i])
+            i += 1
+
+        i = 0
+        for c in x.iter_post(x.root, Order.POST_ORDER):
+            self.assertEqual(c, expected_postorder[i])
+            i += 1
 
 
 if __name__ == "__main__":

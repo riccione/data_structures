@@ -287,6 +287,8 @@ print(bst.contains(6))
 bst.remove(6)
 bst.traverse(bst.root, Order.IN_ORDER)
 print(bst)
+
+# Binary Search Tree
 x = BinarySearchTree()
 x.add(8)
 x._add(x.root, 3, "left")
