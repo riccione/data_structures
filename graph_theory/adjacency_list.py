@@ -1,25 +1,53 @@
+"""
+AdjacencyList class
+"""
+
+
 class AdjacencyList:
     class Edge:
-        def __init__(self, f, t, cost):
+        def __init__(self, f, t, cost=1):
             self.from_ = f
             self.to_ = t
             self.cost = cost
 
+    def __init__(self, typos):
+        self.typos = typos
+        self.graph = {}
+
+    # default value for cost is 1 == unweighted graph
+    def add(self, a, b, cost=1):
+        if self.typos == "undirected":
+            self._add(a, b, cost)
+            self._add(b, a, cost)
+        else:  # directed
+            self._add(a, b, cost)
+
     # create adjencency list
-    def add(self, graph, from_, to_, cost):
-        aa = AdjacencyList.Edge(from_, to_, cost)
-        xs = graph.get(from_)
+    def _add(self, a, b, cost):
+        aa = self.Edge(a, b, cost)
+        xs = self.graph.get(a)
         if xs is None:
-            graph[from_] = []
-        graph[from_].append(aa)
+            self.graph[a] = []
+        self.graph[a].append(aa)
+
+    def get(self, node):
+        return self.graph.get(node)
+
+    def __repr__(self):
+        st = ""
+        for k, v in self.graph.items():
+            edges = []
+            for x in v:
+                edges.append(f"{x.from_}=>{x.to_}, cost={x.cost}")
+            st += "\n".join(edges)
+        return st
 
 
 num_nodes = 5
-aa = AdjacencyList()
-graph = {}
-aa.add(graph, 0, 1, 4)
-aa.add(graph, 0, 2, 3)
-print(graph[0][0].from_)
+aa = AdjacencyList("directed")
+aa.add(0, 1, 4)
+aa.add(0, 2, 3)
+print(aa)
 """
 graph = {}
 graph[0] = [dfs.Edge(0, 1, 4)]
