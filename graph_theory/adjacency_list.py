@@ -42,6 +42,9 @@ class AdjacencyList:
             st += "\n".join(edges)
         return st
 
+    def __str__(self):
+        return self.__repr__()
+
 
 num_nodes = 5
 aa = AdjacencyList("directed")
